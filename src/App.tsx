@@ -79,7 +79,9 @@ const App = () => {
           <Route path="/checkout" element={(
             <Checkout cartDishes={cartDishes}/>
           )}>
-            <Route path="continue" element={<Order/>}/>
+            <Route path="continue" element={(
+              <Order cardDishes={cartDishes}/>
+            )}/>
           </Route>
           <Route path="*" element={(
             <h1 className="text-center mt-4">Not found</h1>
