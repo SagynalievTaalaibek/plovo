@@ -1,7 +1,7 @@
 import React from 'react';
 import Backdrop from '../Backdrop/Backdrop';
 
-interface Props extends React.PropsWithChildren{
+interface Props extends React.PropsWithChildren {
   show: boolean;
   title: string;
   onClose: React.MouseEventHandler;

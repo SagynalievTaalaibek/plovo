@@ -1,18 +1,17 @@
-import CartItem from './CartItem';
-import {CartDish} from '../../types';
 import React, {useState} from 'react';
 import Modal from '../Modal/Modal';
+import {CartDish} from '../../types';
+import {useNavigate} from 'react-router-dom';
+import CartDishes from './CartDishes';
 
 interface Props {
   cartDishes: CartDish[];
 }
 
 const Cart: React.FC<Props> = ({cartDishes}) => {
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
 
-  const total = cartDishes.reduce((sum, cartDish) => {
-    return sum + cartDish.amount * cartDish.dish.price;
-  }, 0);
 
   let cart = (
     <div className="alert alert-primary">
@@ -23,19 +22,9 @@ const Cart: React.FC<Props> = ({cartDishes}) => {
   if (cartDishes.length > 0) {
     cart = (
       <>
-        {cartDishes.map((cartDish) => (
-          <CartItem key={cartDish.dish.id} cartDish={cartDish}/>
-        ))}
-        <div className="card border-0 p-2">
-          <div className="row">
-            <div className="col text-end">
-              Total:
-            </div>
-            <div className="col-3 text-end">
-              <strong>{total}</strong> KGS
-            </div>
-          </div>
-        </div>
+        <CartDishes
+          cartDishes={cartDishes}
+        />
         <button className="w-100 btn btn-primary" onClick={() => setShowModal(true)}>
           Order
         </button>
@@ -49,10 +38,11 @@ const Cart: React.FC<Props> = ({cartDishes}) => {
       {cart}
       <Modal show={showModal} title="Order confirmation" onClose={() => setShowModal(false)}>
         <div className="modal-body">
-          Content
+          <p>Do you want to continue to checkout?</p>
         </div>
         <div className="modal-footer">
           <button className="btn btn-danger" onClick={() => setShowModal(false)}>Cancel</button>
+          <button className="btn btn-success" onClick={() => navigate('/checkout')}>Continue</button>
         </div>
       </Modal>
     </>
