@@ -5,7 +5,6 @@ import {Link, Navigate, Outlet} from 'react-router-dom';
 
 interface Props {
   cartDishes: CartDish[];
-
 }
 
 const Checkout: React.FC<Props> = ({cartDishes}) => {
@@ -15,7 +14,7 @@ const Checkout: React.FC<Props> = ({cartDishes}) => {
 
   return (
     <div className="row mt-2">
-      <div className="col-6 m-auto">
+      <div className="col-8 m-auto">
         <h4>Checkout</h4>
         <CartDishes cartDishes={cartDishes}/>
         <div className="d-flex gap-2">

@@ -1,16 +1,21 @@
 import React from 'react';
 import DishForm from '../../components/DishForm/DishForm';
-import {Dish} from '../../types';
+import {ApiDish} from '../../types';
+import {useNavigate} from 'react-router-dom';
+import axiosApi from '../../axiosApi';
 
-interface Props {
-  onCreate: (dish: Dish) => void;
-}
+const NewDish: React.FC = () => {
+  const navigate = useNavigate();
 
-const NewDish: React.FC<Props> = ({onCreate}) => {
+  const createDish = async (dish: ApiDish) => {
+    await axiosApi.post('dishes.json', dish);
+    navigate('/');
+  };
+
   return (
     <div className="row mt-2">
       <div className="col">
-        <DishForm onSubmit={onCreate}/>
+        <DishForm onSubmit={createDish} />
       </div>
     </div>
   );

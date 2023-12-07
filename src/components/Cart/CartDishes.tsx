@@ -1,7 +1,6 @@
 import React from 'react';
-import CartItem from './CartItem';
 import {CartDish} from '../../types';
-
+import CartItem from './CartItem';
 
 interface Props {
   cartDishes: CartDish[];
@@ -15,7 +14,7 @@ const CartDishes: React.FC<Props> = ({cartDishes}) => {
   return (
     <>
       {cartDishes.map((cartDish) => (
-        <CartItem key={cartDish.dish.id} cartDish={cartDish}/>
+        <CartItem key={cartDish.dish.id} cartDish={cartDish} />
       ))}
       <div className="card border-0 p-2">
         <div className="row">

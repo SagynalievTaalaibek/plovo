@@ -14,12 +14,12 @@ const Modal: React.FC<Props> = ({show, title, onClose, children}) => {
 
   return (
     <>
-      <Backdrop show={show} onClick={onClose}/>
-      <div className="modal show" style={{display: show ? 'block' : 'none'}} onClick={onClose}>
+      <Backdrop show={show} onClick={onClose} />
+      <div className="modal show" style={{display: show ? 'block': 'none'}} onClick={onClose}>
         <div className="modal-dialog" onClick={onInnerClick}>
           <div className="modal-content">
             <div className="modal-header">
-              <h1 className="modal-title">{title}</h1>
+              <h1 className="modal-title fs-5">{title}</h1>
             </div>
             {children}
           </div>

@@ -1,29 +1,32 @@
-import {Dish, DishMutation} from '../../types';
 import React, {useState} from 'react';
+import {ApiDish, DishMutation} from '../../types';
+
+const initialState: DishMutation = {
+  name: '',
+  description: '',
+  image: '',
+  price: '',
+};
 
 interface Props {
-  onSubmit: (dish: Dish) => void;
+  onSubmit: (dish: ApiDish) => void;
+  existingDish?: DishMutation;
+  isEdit?: boolean;
 }
 
-const DishForm: React.FC<Props> = ({onSubmit}) => {
-  const [dish, setDish] = useState<DishMutation>({
-    name: '',
-    description: '',
-    image: '',
-    price: '',
-  });
+const DishForm: React.FC<Props> = ({onSubmit, existingDish = initialState, isEdit = false}) => {
+  const [dish, setDish] = useState<DishMutation>(existingDish);
 
-  const changeDish = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setDish((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
+  const changeDish = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setDish((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
     }));
   };
 
-  const onFormSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
+  const onFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     onSubmit({
-      id: Math.random().toString(),
       ...dish,
       price: parseFloat(dish.price),
     });
@@ -31,7 +34,7 @@ const DishForm: React.FC<Props> = ({onSubmit}) => {
 
   return (
     <form onSubmit={onFormSubmit}>
-      <h4>Add new dish</h4>
+      <h4>{isEdit ? 'Edit dish' : 'Add new dish'}</h4>
       <div className="form-group">
         <label htmlFor="name">Name</label>
         <input
@@ -65,7 +68,7 @@ const DishForm: React.FC<Props> = ({onSubmit}) => {
         />
       </div>
       <div className="form-group">
-        <label htmlFor="name">Price</label>
+        <label htmlFor="price">Price</label>
         <input
           type="number"
           name="price"
@@ -75,7 +78,8 @@ const DishForm: React.FC<Props> = ({onSubmit}) => {
           onChange={changeDish}
         />
       </div>
-      <button type="submit" className="btn btn-primary mt-2">Create</button>
+
+      <button type="submit" className="btn btn-primary mt-2">{isEdit ? 'Update' : 'Create'}</button>
     </form>
   );
 };

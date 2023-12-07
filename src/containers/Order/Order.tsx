@@ -1,27 +1,26 @@
 import React, {useCallback, useState} from 'react';
-import axiosApi from '../../axiosApi';
 import {CartDish, Customer, OrderData} from '../../types';
+import axiosApi from '../../axiosApi';
 import {useNavigate} from 'react-router-dom';
 import Spinner from '../../components/Spinner/Spinner';
 
 interface Props {
-  cardDishes: CartDish[];
+  cartDishes: CartDish[];
 }
 
-const Order: React.FC<Props> = ({cardDishes}) => {
+const Order: React.FC<Props> = ({cartDishes}) => {
   const navigate = useNavigate();
   const [customer, setCustomer] = useState<Customer>({
     name: '',
     address: '',
     phone: '',
   });
-
   const [loading, setLoading] = useState(false);
 
   const customerChanged = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
 
-    setCustomer((prevState) => ({
+    setCustomer(prevState => ({
       ...prevState,
       [name]: value,
     }));
@@ -33,7 +32,7 @@ const Order: React.FC<Props> = ({cardDishes}) => {
 
     const order: OrderData = {
       customer,
-      dishes: cardDishes,
+      dishes: cartDishes,
     };
 
     try {
@@ -49,11 +48,8 @@ const Order: React.FC<Props> = ({cardDishes}) => {
       <div className="form-group">
         <label htmlFor="name">Client name</label>
         <input
-          id="name"
-          type="text"
-          name="name"
+          id="name" type="text" name="name" required
           className="form-control"
-          required
           value={customer.name}
           onChange={customerChanged}
         />
@@ -61,10 +57,7 @@ const Order: React.FC<Props> = ({cardDishes}) => {
       <div className="form-group">
         <label htmlFor="address">Address</label>
         <input
-          id="address"
-          type="text"
-          name="address"
-          required
+          id="address" type="text" name="address" required
           className="form-control"
           value={customer.address}
           onChange={customerChanged}
@@ -73,10 +66,7 @@ const Order: React.FC<Props> = ({cardDishes}) => {
       <div className="form-group mb-3">
         <label htmlFor="phone">Phone</label>
         <input
-          id="phone"
-          type="text"
-          name="phone"
-          required
+          id="phone" type="text" name="phone" required
           className="form-control"
           value={customer.phone}
           onChange={customerChanged}
@@ -101,6 +91,5 @@ const Order: React.FC<Props> = ({cardDishes}) => {
     </div>
   );
 };
-
 
 export default Order;

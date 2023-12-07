@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import Modal from '../Modal/Modal';
 import {CartDish} from '../../types';
+import Modal from '../Modal/Modal';
 import {useNavigate} from 'react-router-dom';
 import CartDishes from './CartDishes';
 
@@ -12,7 +12,6 @@ const Cart: React.FC<Props> = ({cartDishes}) => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
 
-
   let cart = (
     <div className="alert alert-primary">
       Cart is empty! Add something!
@@ -22,9 +21,7 @@ const Cart: React.FC<Props> = ({cartDishes}) => {
   if (cartDishes.length > 0) {
     cart = (
       <>
-        <CartDishes
-          cartDishes={cartDishes}
-        />
+        <CartDishes cartDishes={cartDishes}/>
         <button className="w-100 btn btn-primary" onClick={() => setShowModal(true)}>
           Order
         </button>
