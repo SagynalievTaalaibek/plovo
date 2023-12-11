@@ -7,12 +7,15 @@ const Toolbar: React.FC = () => {
       <div className="container-fluid">
         <span className="navbar-brand">Plovo</span>
 
-        <ul className="navbar-nav mr-auto flex-row gap-2 flex-nowrap">
+        <ul className="navbar-nav mr-5 flex-row gap-2 flex-nowrap">
           <li className="nav-item">
             <NavLink to="/" className="nav-link">Home</NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="/new-dish" className="nav-link">New Dish</NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/orders" className="nav-link">Orders</NavLink>
           </li>
         </ul>
 

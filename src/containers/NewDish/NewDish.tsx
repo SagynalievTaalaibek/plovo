@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import DishForm from '../../components/DishForm/DishForm';
 import {ApiDish} from '../../types';
 import {useNavigate} from 'react-router-dom';
@@ -6,16 +6,22 @@ import axiosApi from '../../axiosApi';
 
 const NewDish: React.FC = () => {
   const navigate = useNavigate();
+  const [creating, setCreating] = useState(false);
 
   const createDish = async (dish: ApiDish) => {
-    await axiosApi.post('dishes.json', dish);
-    navigate('/');
+    try {
+      setCreating(true);
+      await axiosApi.post('dishes.json', dish);
+      navigate('/');
+    } finally {
+      setCreating(false);
+    }
   };
 
   return (
     <div className="row mt-2">
       <div className="col">
-        <DishForm onSubmit={createDish} />
+        <DishForm onSubmit={createDish} isLoading={creating}/>
       </div>
     </div>
   );

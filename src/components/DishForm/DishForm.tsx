@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {ApiDish, DishMutation} from '../../types';
+import ButtonSpinner from '../Spinner/ButtonSpinner';
 
 const initialState: DishMutation = {
   name: '',
@@ -12,9 +13,10 @@ interface Props {
   onSubmit: (dish: ApiDish) => void;
   existingDish?: DishMutation;
   isEdit?: boolean;
+  isLoading?: boolean;
 }
 
-const DishForm: React.FC<Props> = ({onSubmit, existingDish = initialState, isEdit = false}) => {
+const DishForm: React.FC<Props> = ({onSubmit, existingDish = initialState, isEdit = false, isLoading = false}) => {
   const [dish, setDish] = useState<DishMutation>(existingDish);
 
   const changeDish = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -79,7 +81,10 @@ const DishForm: React.FC<Props> = ({onSubmit, existingDish = initialState, isEdi
         />
       </div>
 
-      <button type="submit" className="btn btn-primary mt-2">{isEdit ? 'Update' : 'Create'}</button>
+      <button type="submit" className="btn btn-primary mt-2" disabled={isLoading}>
+        {isLoading && <ButtonSpinner/>}
+        {isEdit ? 'Update' : 'Create'}
+      </button>
     </form>
   );
 };

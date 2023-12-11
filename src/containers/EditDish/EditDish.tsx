@@ -10,6 +10,7 @@ const EditDish: React.FC = () => {
   const navigate = useNavigate();
   const [dish, setDish] = useState<ApiDish | null>(null);
   const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
 
   const fetchOneDish = useCallback(async () => {
     try {
@@ -25,8 +26,13 @@ const EditDish: React.FC = () => {
   }, [fetchOneDish]);
 
   const onSubmit = async (dish: ApiDish) => {
-    await axiosApi.put('dishes/' + id + '.json', dish);
-    navigate('/');
+    try {
+      setUpdating(true);
+      await axiosApi.put('dishes/' + id + '.json', dish);
+      navigate('/');
+    } finally {
+      setUpdating(false);
+    }
   };
 
   const existingDish = dish ? {
@@ -38,7 +44,13 @@ const EditDish: React.FC = () => {
 
   if (!loading) {
     if (dish) {
-      formSection = <DishForm onSubmit={onSubmit} existingDish={existingDish} isEdit/>;
+      formSection = (
+        <DishForm
+          onSubmit={onSubmit}
+          existingDish={existingDish}
+          isLoading={updating}
+          isEdit
+        />);
     } else {
       formSection = <h4>Not found</h4>;
     }
