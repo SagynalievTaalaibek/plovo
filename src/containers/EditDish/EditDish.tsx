@@ -1,38 +1,27 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
-import axiosApi from '../../axiosApi';
+import React, { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import DishForm from '../../components/DishForm/DishForm';
 import Spinner from '../../components/Spinner/Spinner';
-import {ApiDish} from '../../types';
+import { ApiDish } from '../../types';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { fetchOneDish, updateDish } from '../../store/dishes/dishesThunks';
+import { selectDish, selectFetchOneDishLoading, selectUpdateDishLoading } from '../../store/dishes/dishesSlice';
 
 const EditDish: React.FC = () => {
-  const {id} = useParams();
+  const dispatch = useAppDispatch();
+  const { id } = useParams() as {id: string};
   const navigate = useNavigate();
-  const [dish, setDish] = useState<ApiDish | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [updating, setUpdating] = useState(false);
-
-  const fetchOneDish = useCallback(async () => {
-    try {
-      const dishResponse = await axiosApi.get<ApiDish | null>('dishes/' + id + '.json');
-      setDish(dishResponse.data);
-    } finally {
-      setLoading(false);
-    }
-  }, [id]);
+  const dish = useAppSelector(selectDish);
+  const fetchLoading = useAppSelector(selectFetchOneDishLoading);
+  const updateDishLoading = useAppSelector(selectUpdateDishLoading);
 
   useEffect(() => {
-    void fetchOneDish();
-  }, [fetchOneDish]);
+    dispatch(fetchOneDish(id));
+  }, [dispatch, id]);
 
   const onSubmit = async (dish: ApiDish) => {
-    try {
-      setUpdating(true);
-      await axiosApi.put('dishes/' + id + '.json', dish);
-      navigate('/');
-    } finally {
-      setUpdating(false);
-    }
+    await dispatch(updateDish({id, dish}));
+    navigate('/');
   };
 
   const existingDish = dish ? {
@@ -40,15 +29,15 @@ const EditDish: React.FC = () => {
     price: dish.price.toString(),
   } : undefined;
 
-  let formSection = <Spinner/>;
+  let formSection = <Spinner />;
 
-  if (!loading) {
+  if (!fetchLoading) {
     if (dish) {
       formSection = (
         <DishForm
           onSubmit={onSubmit}
           existingDish={existingDish}
-          isLoading={updating}
+          isLoading={updateDishLoading}
           isEdit
         />);
     } else {
@@ -57,8 +46,8 @@ const EditDish: React.FC = () => {
   }
 
   return (
-    <div className="row mt-2">
-      <div className="col">
+    <div className='row mt-2'>
+      <div className='col'>
         {formSection}
       </div>
     </div>

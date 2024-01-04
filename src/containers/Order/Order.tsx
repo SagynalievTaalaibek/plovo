@@ -1,16 +1,16 @@
-import React, {useCallback, useState} from 'react';
-import {CartDish, Customer, ApiOrder} from '../../types';
+import React, { useCallback, useState } from 'react';
+import { ApiOrder, Customer } from '../../types';
 import axiosApi from '../../axiosApi';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Spinner from '../../components/Spinner/Spinner';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { clearCart, selectCartDishes } from '../../store/cartSlice';
 
-interface Props {
-  cartDishes: CartDish[];
-  clearCart: () => void;
-}
 
-const Order: React.FC<Props> = ({cartDishes, clearCart}) => {
+const Order = () => {
+  const cartDishes = useAppSelector(selectCartDishes);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [customer, setCustomer] = useState<Customer>({
     name: '',
     address: '',
@@ -19,7 +19,7 @@ const Order: React.FC<Props> = ({cartDishes, clearCart}) => {
   const [loading, setLoading] = useState(false);
 
   const customerChanged = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = event.target;
+    const { name, value } = event.target;
 
     setCustomer(prevState => ({
       ...prevState,
@@ -38,7 +38,7 @@ const Order: React.FC<Props> = ({cartDishes, clearCart}) => {
 
     try {
       await axiosApi.post('orders.json', order);
-      clearCart();
+      dispatch(clearCart());
       navigate('/');
     } finally {
       setLoading(false);
@@ -47,46 +47,46 @@ const Order: React.FC<Props> = ({cartDishes, clearCart}) => {
 
   let form = (
     <form onSubmit={onFormSubmit}>
-      <div className="form-group">
-        <label htmlFor="name">Client name</label>
+      <div className='form-group'>
+        <label htmlFor='name'>Client name</label>
         <input
-          id="name" type="text" name="name" required
-          className="form-control"
+          id='name' type='text' name='name' required
+          className='form-control'
           value={customer.name}
           onChange={customerChanged}
         />
       </div>
-      <div className="form-group">
-        <label htmlFor="address">Address</label>
+      <div className='form-group'>
+        <label htmlFor='address'>Address</label>
         <input
-          id="address" type="text" name="address" required
-          className="form-control"
+          id='address' type='text' name='address' required
+          className='form-control'
           value={customer.address}
           onChange={customerChanged}
         />
       </div>
-      <div className="form-group mb-3">
-        <label htmlFor="phone">Phone</label>
+      <div className='form-group mb-3'>
+        <label htmlFor='phone'>Phone</label>
         <input
-          id="phone" type="text" name="phone" required
-          className="form-control"
+          id='phone' type='text' name='phone' required
+          className='form-control'
           value={customer.phone}
           onChange={customerChanged}
         />
       </div>
-      <button disabled={loading} type="submit" className="btn btn-primary">
+      <button disabled={loading} type='submit' className='btn btn-primary'>
         Place order
       </button>
     </form>
   );
 
   if (loading) {
-    form = <Spinner/>;
+    form = <Spinner />;
   }
 
   return (
-    <div className="row mt-2">
-      <div className="col">
+    <div className='row mt-2'>
+      <div className='col'>
         <h4>Contact data</h4>
         {form}
       </div>

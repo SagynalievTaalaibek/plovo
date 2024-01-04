@@ -11,14 +11,14 @@ const Orders = () => {
     try {
       setLoading(true);
       const ordersResponse = await axiosApi.get<ApiOrders | null>('orders.json');
-      const ordersData = ordersResponse.data;
+      const receivedOrder = ordersResponse.data;
 
-      if (!ordersData) {
+      if (!receivedOrder) {
         return setOrders([]);
       }
 
-      const newOrders: Order[] = Object.keys(ordersData).map((id) => {
-        const order = ordersData[id];
+      const newOrders: Order[] = Object.keys(receivedOrder).map((id) => {
+        const order = receivedOrder[id];
         const totalPrice = order.dishes.reduce((sum, cartDish) => {
           return sum + cartDish.amount * cartDish.dish.price;
         }, 0);

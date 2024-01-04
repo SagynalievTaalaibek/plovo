@@ -1,13 +1,12 @@
-import React from 'react';
-import {CartDish} from '../../types';
 import CartDishes from '../../components/Cart/CartDishes';
-import {Link, Navigate, Outlet} from 'react-router-dom';
+import { Link, Navigate, Outlet } from 'react-router-dom';
+import { useAppSelector } from '../../app/hooks';
+import { selectCartDishes } from '../../store/cartSlice';
 
-interface Props {
-  cartDishes: CartDish[];
-}
 
-const Checkout: React.FC<Props> = ({cartDishes}) => {
+const Checkout = () => {
+  const cartDishes = useAppSelector(selectCartDishes);
+
   if (cartDishes.length === 0) {
     return <Navigate to="/" />;
   }

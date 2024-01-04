@@ -43,6 +43,7 @@ const DishForm: React.FC<Props> = ({onSubmit, existingDish = initialState, isEdi
           type="text"
           name="name"
           id="name"
+          required
           className="form-control"
           value={dish.name}
           onChange={changeDish}
@@ -64,6 +65,7 @@ const DishForm: React.FC<Props> = ({onSubmit, existingDish = initialState, isEdi
           type="url"
           name="image"
           id="image"
+          required
           className="form-control"
           value={dish.image}
           onChange={changeDish}
@@ -75,6 +77,7 @@ const DishForm: React.FC<Props> = ({onSubmit, existingDish = initialState, isEdi
           type="number"
           name="price"
           id="price"
+          required
           className="form-control"
           value={dish.price}
           onChange={changeDish}

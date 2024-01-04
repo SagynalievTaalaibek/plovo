@@ -4,7 +4,7 @@ import {NavLink} from 'react-router-dom';
 const Toolbar: React.FC = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-      <div className="container-fluid">
+      <div className="container">
         <span className="navbar-brand">Plovo</span>
 
         <ul className="navbar-nav mr-5 flex-row gap-2 flex-nowrap">
